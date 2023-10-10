@@ -4,33 +4,49 @@ app = Flask(__name__)
 
 # Definir tus datos de ciudades aquí
 ciudades_data = [
-    {"id": 1, 
-     "nombre": "Ensenadaoficial", 
+    {
+        "id": 1, 
+     "nombre": "EnsenadaMarketing", 
      "logo": "https://cdn.freebiesupply.com/logos/large/2x/creative-marketing-logo-png-transparent.png", 
      "redes": "https://ensenadahoy.com/", 
      "descripcion": "Ciudad costera con hermosas playas y paisajes impresionantes."},
 
-    {"id": 2, "nombre": "Tecate", "logo": "https://cdn.freebiesupply.com/logos/large/2x/creative-marketing-logo-png-transparent.png", "redes": "https://ensenadahoy.com/", "descripcion": "Ciudad costera con hermosas playas y paisajes impresionantes."},
-
-    {"id": 3, "nombre": "Tijuana", "logo": "https://cdn.freebiesupply.com/logos/large/2x/creative-marketing-logo-png-transparent.png", "redes": "https://ensenadahoy.com/", "descripcion": "Ciudad costera con hermosas playas y paisajes impresionantes."},
-
-    {"id": 4, 
-     "nombre": "Rosarito", 
+    {
+        "id": 2, 
+     "nombre": "TecateMarketing", 
      "logo": "https://cdn.freebiesupply.com/logos/large/2x/creative-marketing-logo-png-transparent.png", 
-     "redes": "https://ensenadahoy.com/", 
-     "descripcion": "Ciudad costera con hermosas playas y paisajes impresionantes."},
+     "redes": "https://tecatehoy.com/", 
+     "descripcion": "Ciudad del pan"
+     },
 
-    {"id": 5, 
-     "nombre": "Mexicali", 
-     "logo": "https://cdn.freebiesupply.com/logos/large/2x/creative-marketing-logo-png-transparent.png", 
-     "redes": "https://ensenadahoy.com/", 
-     "descripcion": "Ciudad costera con hermosas playas y paisajes impresionantes."},
+    {
+        "id": 3, 
+        "nombre": "TijuanaMarketing", 
+        "logo": "https://cdn.freebiesupply.com/logos/large/2x/creative-marketing-logo-png-transparent.png", 
+        "redes": "https://tijuanahoy.com/", 
+        "descripcion": "Ciudad del hongkong y de las desapariciones"
+        },
 
-    {"id": 6, 
-     "nombre": "San Quintin", 
+    {
+        "id": 4, 
+     "nombre": "RosaritoMarketing", 
      "logo": "https://cdn.freebiesupply.com/logos/large/2x/creative-marketing-logo-png-transparent.png", 
-     "redes": "https://ensenadahoy.com/", 
-     "descripcion": "Ciudad costera con hermosas playas y paisajes impresionantes."},
+     "redes": "https://rosaritohoy.com/", 
+     "descripcion": "Ciudad de langostas"},
+
+    {
+        "id": 5, 
+     "nombre": "MexicaliMarketing", 
+     "logo": "https://cdn.freebiesupply.com/logos/large/2x/creative-marketing-logo-png-transparent.png", 
+     "redes": "https://mexicalihoy.com/", 
+     "descripcion": "Ciudad calurosa."},
+
+    {
+        "id": 6, 
+     "nombre": "San QuintinMarketing", 
+     "logo": "https://cdn.freebiesupply.com/logos/large/2x/creative-marketing-logo-png-transparent.png", 
+     "redes": "https://mexicalihoy.com/", 
+     "descripcion": "Ciudad de las fresas"},
     # ... Agrega datos para otras ciudades aquí ...
 ]
 

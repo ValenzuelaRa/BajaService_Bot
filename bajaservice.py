@@ -1,4 +1,4 @@
-import requests
+
 import logging
 from api import encontrar_ciudad_por_id, obtener_ciudad
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update,ForceReply
@@ -43,7 +43,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     await update.message.reply_text("Baja Service es tu guía confiable para descubrir a los mejores agentes de marketing en Baja California. Nuestro bot te conectará con expertos en contenido, reels, manejo de redes sociales y más. Explora las ciudades de Baja California a continuación para encontrar el marketing que necesitas.", reply_markup=reply_markup)
 
 
-import requests
+
 
 async def button(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     query = update.callback_query
@@ -52,10 +52,10 @@ async def button(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     city_data = encontrar_ciudad_por_id(city_id)
     if city_data is not None:
         # Construye el mensaje de respuesta con formato HTML
-        message = f"<b>{city_data['nombre']}</b>\n"
-        message += f"<a href='{city_data['logo']}'>\u200b</a>\n"  # Utilizamos \u200b para asegurar que Telegram convierta el enlace en un hipervínculo
-        message += f"<b>Redes Sociales:</b> {city_data['redes']}\n"
-        message += f"<b>Descripción:</b> {city_data['descripcion']}\n\n"
+        message = f"{city_data['nombre']}\n"
+        message += f"Logo: {city_data['logo']}>\n"  
+        message += f"Redes Sociales: {city_data['redes']}\n"
+        message += f"Descripción: {city_data['descripcion']}\n\n"
 
         # Envía el mensaje de respuesta al usuario
         await query.answer()
@@ -69,7 +69,13 @@ async def button(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Displays info on how to use the bot."""
-    await update.message.reply_text("Use /start to test this bot.")
+    user = update.effective_user
+    await update.message.reply_html(
+        rf"Hola, {user.mention_html()}!",
+        reply_markup=ForceReply(selective=True),
+    )
+
+    await update.message.reply_text("Baja Service Bot esta disponible para cualquier inconformidad las 24-7 escribenos y uno de nuestros asistentes te respondera de la manera mas inmediata")
 
 
 def main() -> None:
