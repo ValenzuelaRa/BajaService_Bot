@@ -1,6 +1,6 @@
 import requests
 import logging
-
+from api import encontrar_ciudad_por_id, obtener_ciudad
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update,ForceReply
 from telegram.ext import Application, CallbackQueryHandler, CommandHandler, ContextTypes
 
@@ -17,19 +17,20 @@ logger = logging.getLogger(__name__)
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Sends a message with three inline buttons attached."""
     keyboard = [
-        [
-            InlineKeyboardButton("Ensenada", callback_data="1"),
-            InlineKeyboardButton("Tecate", callback_data="2"),
-        ],
-        [
-            InlineKeyboardButton("Tijuana", callback_data="1"),
-            InlineKeyboardButton("Rosarito", callback_data="2"),
-        ],
-        [
-            InlineKeyboardButton("Mexicali", callback_data="1"),
-            InlineKeyboardButton("San Quintín", callback_data="2"),
-        ],
-    ]
+    [
+        InlineKeyboardButton("Ensenada", callback_data="1"),
+        InlineKeyboardButton("Tecate", callback_data="2"),
+    ],
+    [
+        InlineKeyboardButton("Tijuana", callback_data="3"),
+        InlineKeyboardButton("Rosarito", callback_data="4"),
+    ],
+    [
+        InlineKeyboardButton("Mexicali", callback_data="5"),
+        InlineKeyboardButton("San Quintín", callback_data="6"),
+    ],
+]
+
 
     reply_markup = InlineKeyboardMarkup(keyboard)
 
@@ -45,30 +46,24 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 import requests
 
 async def button(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    """Parses the CallbackQuery and updates the message text."""
     query = update.callback_query
-    data = query.data.split(":")
-    city_id, city_name, logo, social_media, description = data
+    city_id = int(query.data)  # Convertir el ID de la ciudad de texto a entero
 
-    # Si el botón de Ensenada fue presionado
-    if city_name == "Ensenada":
-        # Realiza una solicitud a la API para obtener datos de Ensenada
-        response = requests.get("http://localhost:5000/ciudades")
-        ensenada_data = response.json()  # Los datos de Ensenada devueltos por la API
-
-        # Construye el mensaje de respuesta
-        message = f"¡Has seleccionado {city_name}!\n\n"
-        for data in ensenada_data:
-            message += f"Logo: {data['logo']}\n"
-            message += f"Redes Sociales: {data['redes']}\n"
-            message += f"Descripción: {data['descripcion']}\n\n"
+    city_data = encontrar_ciudad_por_id(city_id)
+    if city_data is not None:
+        # Construye el mensaje de respuesta con formato HTML
+        message = f"<b>{city_data['nombre']}</b>\n"
+        message += f"<a href='{city_data['logo']}'>\u200b</a>\n"  # Utilizamos \u200b para asegurar que Telegram convierta el enlace en un hipervínculo
+        message += f"<b>Redes Sociales:</b> {city_data['redes']}\n"
+        message += f"<b>Descripción:</b> {city_data['descripcion']}\n\n"
 
         # Envía el mensaje de respuesta al usuario
         await query.answer()
-        await query.edit_message_text(text=message)
+        await query.edit_message_text(text=message, disable_web_page_preview=True)
+
     else:
-        # Maneja otros botones aquí si es necesario
-        pass
+        # Maneja el caso en el que la ciudad con el ID dado no se encuentra
+        await query.answer(text="Ciudad no encontrada")
 
 
 

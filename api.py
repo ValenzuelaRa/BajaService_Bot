@@ -35,8 +35,19 @@ ciudades_data = [
 ]
 
 @app.route('/ciudades', methods=['GET'])
-def obtener_ciudades():
-    return jsonify(ciudades_data)
+def encontrar_ciudad_por_id(ciudad_id):
+    for ciudad in ciudades_data:
+        if ciudad["id"] == ciudad_id:
+            return ciudad
+    return None  # Devuelve None si la ciudad con el ID dado no se encuentra
+
+@app.route('/ciudades/<int:ciudad_id>', methods=['GET'])
+def obtener_ciudad(ciudad_id):
+    # Encuentra los detalles de la ciudad en base al ID proporcionado
+    ciudad = encontrar_ciudad_por_id(ciudad_id)
+    if ciudad is None:
+        return jsonify({"error": "Ciudad no encontrada"}), 404
+    return jsonify(ciudad)
 
 if __name__ == '__main__':
     app.run(debug=True)
