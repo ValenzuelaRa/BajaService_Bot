@@ -92,7 +92,7 @@ def main() -> None:
 
 text = (
         "You may choose to add a family member, yourself, show the gathered data, or end the "
-        "conversation. To abort, simply type /stop."
+          "conversation. To abort, simply type /stop."
     )
 
     
