@@ -1,14 +1,14 @@
-
 import logging
 from api import encontrar_ciudad_por_id, obtener_ciudad
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update,ForceReply
-from telegram.ext import Application, CallbackQueryHandler, CommandHandler, ContextTypes
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update, ForceReply
+from telegram.ext import Application, CommandHandler, ContextTypes, MessageHandler, filters, CallbackQueryHandler
+import requests
 
-# Enable logging
+# Importa la función es_pregunta desde analizar_preguntas
+from analizar_preguntas import es_pregunta
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
 )
-# set higher logging level for httpx to avoid all GET and POST requests being logged
 logging.getLogger("httpx").setLevel(logging.WARNING)
 
 logger = logging.getLogger(__name__)
@@ -78,16 +78,53 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
     await update.message.reply_text("Baja Service Bot esta disponible para cualquier inconformidad las 24-7 escribenos y uno de nuestros asistentes te respondera de la manera mas inmediata")
 
 
+
+async def procesar_pregunta(update: Update, context):
+    pregunta = update.message.text
+
+    # URL de tu API Flask local
+    api_url = f"http://127.0.0.1:5000/?pregunta={pregunta}"
+
+    try:
+        # Realizar solicitud a la API Flask
+        response = requests.get(api_url)
+
+        if response.status_code == 200:
+            resultado_api = response.json()
+
+            # Verificar si la respuesta indica que es una pregunta
+            if resultado_api.get('Tipo de Pregunta Detallado', '').startswith('"pronombres_interrogativos'):
+                tipo_pregunta = resultado_api.get('Tipo de Pregunta Detallado', '').split(',')[0][1:]
+                palabra_interrogativa = resultado_api.get('Palabra')
+                respuesta = f"¡Sí, es una pregunta: '¿{pregunta}?' \nPalabra interrogativa: {palabra_interrogativa} \nTipo de pregunta: {tipo_pregunta}"
+            else:
+                respuesta = "No es una pregunta, ingresa una pregunta válida"
+
+        else:
+            respuesta = "Hubo un problema al procesar la pregunta."
+
+    except Exception as e:
+        logging.error(f"Error al hacer la solicitud a la API: {e}")
+        respuesta = "Hubo un error interno al procesar la pregunta."
+
+    # Responder al usuario
+    await update.message.reply_text(respuesta)
+
+
+
+
+
+
+
+
 def main() -> None:
-    """Run the bot."""
-    # Create the Application and pass it your bot's token.
     application = Application.builder().token("6324858106:AAHRoqD-4FlVUQyxbXOSqhz4DyXQB4j5MkM").build()
 
     application.add_handler(CommandHandler("start", start))
     application.add_handler(CallbackQueryHandler(button))
+    application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, procesar_pregunta))
     application.add_handler(CommandHandler("help", help_command))
 
-    # Run the bot until the user presses Ctrl-C
     application.run_polling(allowed_updates=Update.ALL_TYPES)
 
 text = (
