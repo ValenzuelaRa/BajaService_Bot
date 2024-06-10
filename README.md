@@ -4,7 +4,7 @@ El **BajaService Bot** es un bot de Telegram que proporciona información sobre 
 
 ## Instalación
 
-1. Clona este repositorio en tu máquina local:
+1. Clona este repositorio en tu máquina local: https://github.com/ValenzuelaRa/BajaService_Bot.git
 
 # BajaService Bot
 
@@ -12,7 +12,7 @@ El **BajaService Bot** es un bot de Telegram que proporciona información sobre 
 
 ## Instalación
 
-1. Clona este repositorio en tu máquina local:
+1. Clona este repositorio en tu máquina local: https://github.com/ValenzuelaRa/BajaService_Bot.git
 
 3. Asegúrate de tener instalado SWI-Prolog en tu sistema. Puedes descargarlo desde [este enlace](https://www.swi-prolog.org/download/stable).
 
